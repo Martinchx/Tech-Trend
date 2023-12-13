@@ -1,0 +1,45 @@
+body {
+  font-family: "Mooli", sans-serif;
+  background: linear-gradient(to bottom, #171b26, #000000);
+}
+
+.dropdown-item {
+  cursor: pointer !important;
+}
+
+.custom-table-title {
+  background-color: #34495e;
+  color: white;
+  padding: 15px;
+}
+
+.modal-content {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.product-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.product-image {
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #fff;
+  width: 100%;
+  height: auto;
+  max-height: 135px;
+  object-fit: cover;
+}
+
+.modal-body {
+  background-color: #fff;
+}
+
+@media (max-width: 767px) {
+  .product-image {
+    height: 200px;
+    max-height: none;
+  }
+}

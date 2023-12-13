@@ -1,0 +1,31 @@
+body {
+  font-family: "Mooli", sans-serif;
+  background: linear-gradient(to bottom, #171b26, #000000);
+  min-height: 90vh;
+}
+
+.dropdown-item {
+  cursor: pointer !important;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu a:focus {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+.custom-table-title {
+  background-color: #34495e;
+  color: white;
+  padding: 15px;
+}
+
+.invalidInput {
+  color: #fff;
+  font-size: 12px;
+  margin-top: 2px;
+  background-color: red;
+  border-radius: 0 0 20px 20px;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  margin-bottom: 0px;
+}

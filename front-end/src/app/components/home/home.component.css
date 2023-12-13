@@ -1,0 +1,13 @@
+.c-item {
+  height: 715px;
+}
+
+.c-item .carousel-caption {
+  margin-top: 8rem;
+}
+
+.c-img {
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.6);
+}

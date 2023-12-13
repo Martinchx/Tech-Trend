@@ -1,0 +1,41 @@
+body {
+  background-image: url("../../../assets/home-wallpapers/slide-image-1.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: "Mooli", sans-serif;
+  background-position: center center;
+  min-height: 90vh;
+}
+
+.transparent-form {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+}
+
+.transparent-form input {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #ffa500;
+}
+
+.user-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.invalidInput {
+  color: #fff;
+  font-size: 12px;
+  margin-top: 2px;
+  background-color: red;
+  border-radius: 0 0 20px 20px;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  margin-bottom: 0px;
+}
+
+.disabled-link {
+  pointer-events: none;
+  cursor: not-allowed;
+}

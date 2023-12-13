@@ -1,0 +1,316 @@
+<body class="py-5">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 d-lg-none">
+        <div class="d-flex justify-content-between">
+          <button
+            type="button"
+            class="btn btn-primary ms-3 w-15 mb-3"
+            data-bs-toggle="modal"
+            data-bs-target="#searchModal"
+          >
+            <i class="fas fa-shopping-cart"></i> Search
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary me-3 w-15 mb-3"
+            data-bs-toggle="modal"
+            data-bs-target="#categoriesModal"
+            (click)="getCategories()"
+          >
+            <i class="fas fa-shopping-cart"></i> Categories
+          </button>
+        </div>
+      </div>
+
+      <div class="col-lg-3 ps-5 d-none d-lg-block">
+        <div class="d-none d-lg-block">
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control shadow-sm"
+              placeholder="Search..."
+              name="productName"
+              [(ngModel)]="productToSearch"
+            />
+            <button
+              class="btn btn-primary shadow-sm"
+              type="button"
+              (click)="searchProduct()"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+        <div class="d-none d-lg-block">
+          <ul class="list-group">
+            <li
+              class="list-group-item clickable-category"
+              *ngFor="let c of categories"
+              [ngClass]="{ active: c.name === activeCategory }"
+              (click)="setActiveCategory(c)"
+            >
+              <i class="fas fa-list-ul me-1"></i> {{ c.name }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div
+        class="col-12 col-lg-9 pt-4 pt-lg-2 px-5 text-center text-white"
+        *ngIf="products.length === 0"
+      >
+        <p><i class="fas fa-clock fa-3x"></i></p>
+        <p class="message-text">No products available at the moment!</p>
+        <p class="sub-message">
+          We will add them as soon as possible, please be patient 😊
+        </p>
+      </div>
+
+      <div class="col-12 col-lg-9 pt-2 px-5" *ngIf="products.length > 0">
+        <h1 class="display-4 text-center mb-4" style="color: #fff">
+          Our Featured Products
+        </h1>
+        <p class="lead text-center mb-5" style="color: #ccc">
+          Explore our exclusive section
+        </p>
+        <div class="row row-cols-1 row-cols-lg-3 g-4">
+          <div class="col" *ngFor="let p of products">
+            <div class="card h-100 product-card border-0">
+              <div class="card-img-container">
+                <img
+                  [src]="p.image.secure_url"
+                  class="card-img-top img-fluid"
+                  alt="{{ p.name }}"
+                />
+              </div>
+              <div class="card-body d-flex flex-column align-items-center">
+                <h5 class="card-title fs-4 pb-2 text-center">
+                  <strong>{{ p.name }}</strong>
+                </h5>
+                <div class="d-flex justify-content-between w-100 mt-auto">
+                  <p class="card-text">
+                    <i class="fa-solid fa-dollar-sign"></i
+                    >{{
+                      p.price
+                        | currency : "USD" : "symbol" : "1.2-2"
+                        | slice : 1
+                    }}
+                  </p>
+                  <p class="card-text">📦 {{ p.stock }} in stock</p>
+                </div>
+                <div class="mt-1">
+                  <button
+                    class="btn btn-primary w-100"
+                    [routerLink]="['/product-detail', p._id]"
+                    [disabled]="processing"
+                  >
+                    <i class="fas fa-info-circle me-2"></i> View Details
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-success w-100 mt-1"
+                    data-bs-toggle="modal"
+                    data-bs-target="#add-to-cart-modal"
+                    (click)="getProduct(p._id)"
+                    [disabled]="processing"
+                  >
+                    <i class="fas fa-cart-plus"></i> Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="searchModal"
+      tabindex="-1"
+      aria-labelledby="searchModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h1 class="modal-title fs-5" id="searchModalLabel">
+              <i class="fas fa-search me-2"></i> Product Search
+            </h1>
+            <button
+              type="button"
+              class="btn-close text-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="searchInput" class="form-label"
+                >Search Product:</label
+              >
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control shadow-sm"
+                  id="searchInput"
+                  name="productName"
+                  placeholder="Enter product name"
+                  [(ngModel)]="productToSearch"
+                />
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  (click)="searchProduct()"
+                  data-bs-dismiss="modal"
+                >
+                  <i class="fas fa-search"></i> Search
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="categoriesModal"
+      tabindex="-1"
+      aria-labelledby="categoriesModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h1 class="modal-title fs-5" id="categoriesModalLabel">
+              <i class="fas fa-list me-2"></i> Categories
+            </h1>
+            <button
+              type="button"
+              class="btn-close text-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="d-grid gap-2">
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                (click)="getProducts()"
+              >
+                All
+              </button>
+              <button
+                type="button"
+                class="btn"
+                data-bs-dismiss="modal"
+                style="background-color: #2c3348; color: #fff"
+                *ngFor="let c of categories"
+                (click)="getProductsByCategory(c)"
+              >
+                {{ c.name }}
+              </button>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="add-to-cart-modal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content" *ngIf="product">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">
+              <i class="fas fa-shopping-cart"></i> Add to Cart
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            How many items would you like to add to your cart?
+
+            <div
+              class="mt-2 d-flex align-items-center justify-content-center input-group input-group-lg"
+            >
+              <button
+                type="button"
+                id="decrement-button"
+                class="btn btn-danger"
+                (click)="updateQuantity(false)"
+              >
+                <i class="fas fa-minus"></i>
+              </button>
+              <input
+                type="text"
+                id="quantity-input"
+                min="1"
+                max="{{ product.stock }}"
+                [(ngModel)]="productToAdd.quantity"
+                class="form-control text-center shadow-sm"
+              />
+              <button
+                type="button"
+                id="increment-button"
+                class="btn btn-success"
+                (click)="updateQuantity(true)"
+              >
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              [disabled]="isInvalidQuantity(productToAdd.quantity)"
+              (click)="addProductToCart(product)"
+            >
+              <i class="fas fa-cart-plus"></i> Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

@@ -1,0 +1,225 @@
+<body class="d-flex align-items-center justify-content-center">
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-6 col-xl-6 px-4">
+        <div class="row">
+          <div
+            class="col align-self-center p-5 pb-1 shadow rounded transparent-form"
+          >
+            <div class="user-icon">
+              <i class="fa-solid fa-users-line fa-5x" style="color: #fff"></i>
+            </div>
+            <h3 class="fw-bolder text-center mt-3" style="color: #fff">
+              SIGN UP
+            </h3>
+            <form #signupForm="ngForm" class="mt-4">
+              <div class="mb-3">
+                <label for="fullname" class="form-label fw-bolder text-white">
+                  <i class="fa-solid fa-user"></i>
+                  <span class="ms-2">Fullname</span>
+                </label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control shadow-sm fw-lighter fs-7 p-2 text-white"
+                    name="fullname"
+                    id="fullname"
+                    required
+                    [(ngModel)]="user.fullname"
+                    #fullname="ngModel"
+                    minlength="7"
+                    [disabled]="processing"
+                  />
+                </div>
+
+                <div
+                  *ngIf="
+                    fullname.invalid && (fullname.dirty || fullname.touched)
+                  "
+                >
+                  <div
+                    *ngIf="fullname.errors?.['required']"
+                    class="invalidInput text-center"
+                  >
+                    Fullaname is required
+                  </div>
+
+                  <div
+                    *ngIf="fullname.errors?.['minlength']"
+                    class="invalidInput text-center"
+                  >
+                    Fullname must be at least 7 characters long
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="email" class="form-label fw-bolder text-white">
+                  <i class="fas fa-envelope"></i>
+                  <span class="ms-2">Email</span>
+                </label>
+                <div class="input-group">
+                  <input
+                    type="email"
+                    class="form-control shadow-sm fw-lighter fs-7 p-2 text-white"
+                    name="email"
+                    id="email"
+                    required
+                    [(ngModel)]="user.email"
+                    #email="ngModel"
+                    pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                    [disabled]="processing"
+                  />
+                </div>
+
+                <div *ngIf="email.invalid && (email.dirty || email.touched)">
+                  <div
+                    *ngIf="email.errors?.['required']"
+                    class="invalidInput text-center"
+                  >
+                    Email is required
+                  </div>
+                  <div
+                    *ngIf="email.errors?.['pattern']"
+                    class="invalidInput text-center"
+                  >
+                    Please enter a valid email address
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label fw-bolder text-white">
+                  <i class="fas fa-lock"></i>
+                  <span class="ms-2">Password</span>
+                </label>
+                <div class="input-group">
+                  <input
+                    type="password"
+                    class="form-control shadow-sm fw-lighter fs-7 p-2 text-white"
+                    name="password"
+                    id="password"
+                    required
+                    [(ngModel)]="user.password"
+                    #password="ngModel"
+                    minlength="7"
+                    [disabled]="processing"
+                  />
+                </div>
+
+                <div
+                  *ngIf="
+                    password.invalid && (password.dirty || password.touched)
+                  "
+                >
+                  <div
+                    *ngIf="password.errors?.['required']"
+                    class="invalidInput text-center"
+                  >
+                    Password is required
+                  </div>
+                  <div
+                    *ngIf="password.errors?.['minlength']"
+                    class="invalidInput text-center"
+                  >
+                    Password must be at least 7 characters long
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="phone" class="form-label fw-bolder text-white">
+                  <i class="fa-solid fa-phone"></i>
+                  <span class="ms-2">Phone</span>
+                </label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control shadow-sm fw-lighter fs-7 p-2 text-white"
+                    name="phone"
+                    id="phone"
+                    required
+                    [(ngModel)]="user.phone"
+                    #phone="ngModel"
+                    minlength="10"
+                    [disabled]="processing"
+                  />
+                </div>
+
+                <div *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+                  <div
+                    *ngIf="phone.errors?.['required']"
+                    class="invalidInput text-center"
+                  >
+                    Phone is required
+                  </div>
+
+                  <div
+                    *ngIf="phone.errors?.['minlength']"
+                    class="invalidInput text-center"
+                  >
+                    Phone must be at least 10 characters long
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="address" class="form-label fw-bolder text-white">
+                  <i class="fa-solid fa-house"></i>
+                  <span class="ms-2">Address</span>
+                </label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control shadow-sm fw-lighter fs-7 p-2 text-white"
+                    name="address"
+                    id="address"
+                    required
+                    [(ngModel)]="user.address"
+                    #address="ngModel"
+                    minlength="10"
+                    [disabled]="processing"
+                  />
+                </div>
+
+                <div
+                  *ngIf="address.invalid && (address.dirty || address.touched)"
+                >
+                  <div
+                    *ngIf="address.errors?.['required']"
+                    class="invalidInput text-center"
+                  >
+                    Addres is required
+                  </div>
+
+                  <div
+                    *ngIf="address.errors?.['minlength']"
+                    class="invalidInput text-center"
+                  >
+                    Address must be at least 10 characters long
+                  </div>
+                </div>
+              </div>
+              <div class="text-center">
+                <button
+                  type="submit"
+                  class="btn btn-outline-warning btn-lg rounded-pill w-100 mt-2"
+                  [disabled]="signupForm.invalid || processing"
+                  (click)="signup()"
+                >
+                  Sign Up
+                </button>
+              </div>
+            </form>
+            <p class="fw-lighter fs-6 text-center mt-4 text-white">
+              Already have an account?
+              <a
+                [routerLink]="['/login']"
+                [ngClass]="{ 'disabled-link': processing }"
+                style="text-decoration: none; color: #ffa500"
+                >Sign in</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

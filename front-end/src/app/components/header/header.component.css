@@ -1,0 +1,15 @@
+nav {
+  font-family: "Mooli", sans-serif;
+}
+
+.navbar .nav-item.active a.nav-link,
+.navbar .nav-item.active.dropdown.show a.nav-link,
+.navbar .nav-item.dropdown.show a.nav-link {
+  color: rgb(255, 193, 7) !important;
+  background-color: rgb(40, 40, 40);
+}
+
+.dropdown-item:active,
+.dropdown-item:focus {
+  background-color: #2b3035 !important;
+}

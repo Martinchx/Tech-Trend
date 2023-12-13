@@ -1,0 +1,212 @@
+<body>
+  <div class="container py-5">
+    <div
+      class="text-center text-white"
+      *ngIf="!cart.products || cart.products.length === 0"
+    >
+      <p><i class="fas fa-shopping-cart fa-3x"></i></p>
+      <p class="message-text">Your cart is empty!</p>
+      <p class="sub-message">Add some products now. 🛒🌟</p>
+    </div>
+
+    <h2
+      class="cart-title text-center mb-4 text-white"
+      *ngIf="cart.products && cart.products.length > 0"
+    >
+      <i class="fas fa-shopping-cart"></i> Shopping Car
+    </h2>
+
+    <div
+      class="row row-cols-1 row-cols-lg-3 g-4"
+      *ngIf="cart.products && cart.products.length > 0"
+    >
+      <div class="col" *ngFor="let p of cart.products">
+        <div class="card border-0 h-100">
+          <div class="card-img-container">
+            <img
+              [src]="p.product.image.secure_url"
+              class="card-img-top img-fluid"
+              alt="{{ p.product.name }}"
+            />
+          </div>
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ p.product.name }}</h5>
+            <p class="card-text">
+              <span class="text-success">
+                <i class="fas fa-dollar-sign"></i
+                >{{
+                  p.product.price
+                    | currency : "USD" : "symbol" : "1.2-2"
+                    | slice : 1
+                }}
+              </span>
+              <i class="fas fa-minus"></i>
+
+              <span class="text-primary">
+                <i class="fas fa-shopping-cart ms-1"></i>
+              </span>
+              {{ p.quantity }}
+            </p>
+
+            <div class="mt-auto">
+              <button
+                class="btn btn-outline-danger btn-sm me-2"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteModal"
+                (click)="getProduct(p)"
+                [disabled]="processing"
+              >
+                <i class="fas fa-trash"></i> Delete
+              </button>
+              <button
+                class="btn btn-outline-primary btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#update-product-quantity-modal"
+                (click)="getProduct(p)"
+                [disabled]="processing"
+              >
+                <i class="fas fa-edit"></i> Update quantity
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="update-product-quantity-modal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content" *ngIf="product">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">
+              <i class="fas fa-shopping-cart"></i> Update product quantity
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            How many items would you like to add to your cart?
+
+            <div
+              class="mt-2 d-flex align-items-center justify-content-center input-group input-group-lg"
+            >
+              <button
+                type="button"
+                id="decrement-button"
+                class="btn btn-danger"
+                (click)="updateQuantity(false)"
+              >
+                <i class="fas fa-minus"></i>
+              </button>
+              <input
+                type="text"
+                id="quantity-input"
+                min="1"
+                max="{{ product.stock }}"
+                [(ngModel)]="updatedProduct.quantity"
+                class="form-control text-center shadow-sm"
+              />
+              <button
+                type="button"
+                id="increment-button"
+                class="btn btn-success"
+                (click)="updateQuantity(true)"
+              >
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              [disabled]="
+                isInvalidQuantity(updatedProduct.quantity) || processing
+              "
+              (click)="updateProductQuantity()"
+            >
+              <i class="fas fa-edit"></i> Update quantity
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="deleteModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-trash"></i> Confirm Deletion
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete this product from the cart?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              (click)="deleteProductFromCart()"
+              data-bs-dismiss="modal"
+              [disabled]="processing"
+            >
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="text-center mt-5 text-white"
+      *ngIf="cart.products && cart.products.length > 0"
+    >
+      <h3>Total: {{ cart.total | currency : "USD" }}</h3>
+      <button
+        class="btn btn-success w-25 mt-3"
+        (click)="payProducts()"
+        [disabled]="processing"
+      >
+        Pay
+      </button>
+    </div>
+  </div>
+</body>

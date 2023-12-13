@@ -1,0 +1,144 @@
+<body style="min-height: 90vh; overflow-y: auto">
+  <div class="container py-5">
+    <div class="text-center text-white" *ngIf="!orders || orders.length === 0">
+      <p><i class="fas fa-clipboard-list fa-3x"></i></p>
+      <p class="message-text">No orders found!</p>
+    </div>
+
+    <div
+      class="table-title custom-table-title rounded"
+      *ngIf="orders && orders.length > 0"
+    >
+      <div class="row">
+        <div class="col-sm-6 d-flex align-items-center">
+          <h2 class="m-0"><i class="fas fa-clipboard-list"></i> My Orders</h2>
+        </div>
+        <div class="col-sm-6 d-flex justify-content-end">
+          <div class="dropdown">
+            <button
+              class="btn btn-primary dropdown-toggle my-2 my-sm-0"
+              type="button"
+              id="filterDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="fas fa-filter"></i> Filter by
+            </button>
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="filterDropdown"
+            >
+              <li>
+                <a class="dropdown-item" (click)="applyFilter('total')"
+                  >Sort by total</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="applyFilter('creationDate')"
+                  >Sort by creationDate</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive" *ngIf="orders && orders.length > 0">
+      <table class="table table-striped text-center table-hover mb-0">
+        <thead>
+          <tr>
+            <th>Date of purchase</th>
+            <th>Total</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let o of orders">
+            <td>{{ o.createdAt | date : "MM/dd/yyyy hh:mm a" }}</td>
+            <td>
+              <i class="fas fa-dollar-sign"></i
+              >{{ o.total | currency : "USD" : "symbol" : "1.2-2" | slice : 1 }}
+            </td>
+            <td>
+              <button
+                class="btn btn-primary"
+                (click)="getOrder(o._id)"
+                data-bs-toggle="modal"
+                data-bs-target="#orderDetailsModal"
+              >
+                <i class="fas fa-eye"></i> Show details
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="orderDetailsModal"
+    tabindex="-1"
+    aria-labelledby="orderDetailsModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="orderDetailsModalLabel">
+            <i class="fas fa-info-circle"></i> Order Details
+          </h5>
+          <button
+            type="button"
+            class="btn-close text-white"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body" *ngIf="selectedOrder">
+          <h5>Purchased Products:</h5>
+          <div
+            *ngFor="let p of selectedOrder.products"
+            class="mb-3 product-item"
+          >
+            <div class="row">
+              <div class="col-12 col-md-4">
+                <img
+                  [src]="p.product.image.secure_url"
+                  alt="{{ p.product.name }}"
+                  class="img-fluid rounded product-image"
+                />
+              </div>
+              <div class="col-12 col-md-8">
+                <h6 class="mt-lg-0 mt-3 mb-3">
+                  <i class="fas fa-info-circle me-1"></i>{{ p.product.name }}
+                </h6>
+                <p class="text-success">
+                  <i class="fas fa-dollar-sign ms-1"></i
+                  >{{
+                    p.product.price
+                      | currency : "USD" : "symbol" : "1.2-2"
+                      | slice : 1
+                  }}
+                </p>
+                <p class="text-primary">
+                  <i class="fas fa-shopping-cart"></i>
+                  {{ p.quantity }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

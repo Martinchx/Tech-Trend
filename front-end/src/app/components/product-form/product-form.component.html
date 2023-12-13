@@ -1,0 +1,212 @@
+<body>
+  <div class="container py-5">
+    <div class="card border-0">
+      <div class="card-header custom-bg-color py-3">
+        <h3 class="mb-0">
+          <i class="fas fa-shopping-cart"></i>
+          {{ productId.length > 1 ? "Modify Product" : "Create Product" }}
+        </h3>
+      </div>
+      <div class="card-body">
+        <form #productForm="ngForm">
+          <div class="mb-3 form-group">
+            <label for="name" class="form-label">Name:</label>
+            <input
+              type="text"
+              class="form-control shadow-sm"
+              name="name"
+              id="name"
+              required
+              [(ngModel)]="product.name"
+              #name="ngModel"
+              [disabled]="processing"
+            />
+
+            <div *ngIf="name.invalid && (name.dirty || name.touched)">
+              <div
+                *ngIf="name.errors?.['required']"
+                class="invalidInput text-center"
+              >
+                Name is required
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3 form-group">
+            <label for="description" class="form-label">Description:</label>
+            <textarea
+              class="form-control shadow-sm"
+              rows="3"
+              name="description"
+              id="description"
+              required
+              [(ngModel)]="product.description"
+              #description="ngModel"
+              [disabled]="processing"
+            ></textarea>
+
+            <div
+              *ngIf="
+                description.invalid &&
+                (description.dirty || description.touched)
+              "
+            >
+              <div
+                *ngIf="description.errors?.['required']"
+                class="invalidInput text-center"
+              >
+                Description is required
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 form-group">
+            <label for="price" class="form-label">Price:</label>
+            <input
+              type="text"
+              class="form-control shadow-sm"
+              name="price"
+              id="price"
+              required
+              [(ngModel)]="product.price"
+              #price="ngModel"
+              pattern="^[1-9][0-9]*$"
+              [disabled]="processing"
+            />
+
+            <div *ngIf="price.invalid && (price.dirty || price.touched)">
+              <div
+                *ngIf="price.errors?.['required']"
+                class="invalidInput text-center"
+              >
+                Price is required
+              </div>
+              <div
+                *ngIf="price.errors?.['pattern']"
+                class="invalidInput text-center"
+              >
+                Price must be a valid number greater than or equal to 1
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3 form-group">
+            <label for="stock" class="form-label">Stock:</label>
+            <input
+              type="text"
+              class="form-control shadow-sm"
+              name="stock"
+              id="stock"
+              required
+              [(ngModel)]="product.stock"
+              #stock="ngModel"
+              pattern="^[1-9][0-9]*$"
+              [disabled]="processing"
+            />
+
+            <div *ngIf="stock.invalid && (stock.dirty || stock.touched)">
+              <div
+                *ngIf="stock.errors?.['required']"
+                class="invalidInput text-center"
+              >
+                Stock is required
+              </div>
+              <div
+                *ngIf="stock.errors?.['pattern']"
+                class="invalidInput text-center"
+              >
+                Stock must be a valid number greater than or equal to 1
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3 form-group">
+            <label for="category" class="form-label">Category: </label>
+            <select
+              class="form-select shadow-sm form-control-sm"
+              name="category"
+              id="category"
+              required
+              [(ngModel)]="product.category"
+              #category="ngModel"
+              [disabled]="processing"
+            >
+              <option [value]="c._id" *ngFor="let c of categories">
+                {{ c.name }}
+              </option>
+            </select>
+
+            <div
+              *ngIf="category.invalid && (category.dirty || category.touched)"
+            >
+              <div
+                *ngIf="category.errors?.['required']"
+                class="invalidInput text-center"
+              >
+                Category is required
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3 form-group">
+            <div class="row d-flex justify-content-center">
+              <div class="col-sm-6 col-md-4">
+                <img
+                  *ngIf="product.imageValidator"
+                  [src]="product.imageValidator"
+                  alt="{{ product.name }}"
+                  class="img-fluid mb-3"
+                />
+              </div>
+            </div>
+
+            <label for="image" class="form-label">{{
+              product.imageValidator ? "Modify Current Image:" : "Upload Image:"
+            }}</label>
+            <input
+              type="file"
+              accept="image/*"
+              class="form-control shadow-sm"
+              name="image"
+              id="image"
+              (change)="getFile($event)"
+              [disabled]="processing"
+            />
+          </div>
+
+          <div class="text-end">
+            <button
+              type="button"
+              class="btn btn-danger me-2 col-auto"
+              [routerLink]="['/products']"
+              [disabled]="processing"
+            >
+              <i class="fas fa-times"></i> Cancel
+            </button>
+
+            <button
+              type="submit"
+              class="btn btn-success col-auto"
+              *ngIf="!(productId.length > 1)"
+              [disabled]="productForm.invalid || !image || processing"
+              (click)="createProduct()"
+            >
+              <i class="fas fa-plus"></i> Create
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-warning col-auto"
+              *ngIf="productId.length > 1"
+              [disabled]="
+                productForm.invalid || !product.imageValidator || processing
+              "
+              (click)="updateProduct()"
+            >
+              <i class="fas fa-edit"></i> Modify
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
